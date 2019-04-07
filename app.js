@@ -15,7 +15,7 @@ const ideas = require('./routes/ideas');
 const users = require('./routes/users');
 
 // Passport Config
-require('./config/passport')
+require('./config/passport')(passport);
 
 // Map global promise - get rid of warning
 mongoose.Promise = global.Promise;
@@ -51,7 +51,7 @@ app.use(session({
 
 // Passport middleware
 app.use(passport.initialize());
-
+app.use(passport.session());
 
 app.use(flash());
 
