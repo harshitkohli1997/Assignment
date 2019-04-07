@@ -1,6 +1,5 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const passport = require('passport');
 const router = express.Router();
 const {ensureAuthenticated} = require('../helpers/auth');
 
@@ -8,11 +7,8 @@ const {ensureAuthenticated} = require('../helpers/auth');
 require('../models/Idea');
 const Idea = mongoose.model('ideas');
 
-router.get('/ab', (req,res) => {
-    console.log(req.user);
-})
 // Idea Index Page
-router.get('/',passport.authenticate('jwt', { session: false }), (req, res) => {
+router.get('/', ensureAuthenticated, (req, res) => {
   Idea.find({user: req.user.id})
     .sort({date:'desc'})
     .then(ideas => {
@@ -23,12 +19,12 @@ router.get('/',passport.authenticate('jwt', { session: false }), (req, res) => {
 });
 
 // Add Idea Form
-router.get('/add', passport.authenticate('jwt', { session: false }), (req, res) => {
+router.get('/add', ensureAuthenticated, (req, res) => {
   res.render('ideas/add');
 });
 
 // Edit Idea Form
-router.get('/edit/:id', passport.authenticate('jwt', { session: false }), (req, res) => {
+router.get('/edit/:id', ensureAuthenticated, (req, res) => {
   Idea.findOne({
     _id: req.params.id
   })
@@ -46,7 +42,7 @@ router.get('/edit/:id', passport.authenticate('jwt', { session: false }), (req, 
 });
 
 // Process Form
-router.post('/', passport.authenticate('jwt', { session: false }), (req, res) => {
+router.post('/', ensureAuthenticated, (req, res) => {
   let errors = [];
 
   if(!req.body.title){
@@ -78,7 +74,7 @@ router.post('/', passport.authenticate('jwt', { session: false }), (req, res) =>
 });
 
 // Edit Form process
-router.put('/:id', passport.authenticate('jwt', { session: false }), (req, res) => {
+router.put('/:id', ensureAuthenticated, (req, res) => {
   Idea.findOne({
     _id: req.params.id
   })
@@ -96,7 +92,7 @@ router.put('/:id', passport.authenticate('jwt', { session: false }), (req, res) 
 });
 
 // Delete Idea
-router.delete('/:id',passport.authenticate('jwt', { session: false }), (req, res) => {
+router.delete('/:id', ensureAuthenticated, (req, res) => {
   Idea.remove({_id: req.params.id})
     .then(() => {
       req.flash('success_msg', 'idea removed');
