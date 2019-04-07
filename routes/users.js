@@ -22,50 +22,26 @@ router.get('/register', (req, res) => {
 
 // Login Form POST
 router.post('/login', (req, res) => {
-  //const { errors, isValid } = validateLoginInput(req.body);
-
-  // Check Validation
-  //if (!isValid) {
-    //return res.status(400).json(errors);
-  //}
-
-  const email = req.body.email;
-  const password = req.body.password;
-
-  // Find user by email
-  User.findOne({ email }).then(user => {
-    // Check for user
-    if (!user) {
-      errors.email = 'User not found';
-      return res.status(404).json(errors);
+  var user = {
+    email:req.body.email,
+    password:req.body.password
+  }
+  passport.authenticate('local', {session: false}, (err, user, info) => {
+    if (err || !user) {
+        return res.status(400).json({
+            message: 'Something is not right',
+            user   : user
+        });
     }
-
-    // Check Password
-    bcrypt.compare(password, user.password).then(isMatch => {
-      if (isMatch) {
-        // User Matched
-        const payload = { id: user.id, name: user.name, avatar: user.avatar }; // Create JWT Payload
-
-        // Sign Token
-        var auth = {}
-        jwt.sign(
-          payload,
-          keys.secretOrKey,
-          { expiresIn: 3600 },
-          (err, token) => {
-            auth.token = token;
-            auth.status = true;
-            res.render('ideas/index', {
-              auth:auth
-            });
-          }
-        );
-      } else {
-        errors.password = 'Password incorrect';
-        return res.status(400).json(errors);
-      }
+   req.login(user, {session: false}, (err) => {
+       if (err) {
+           res.send(err);
+       }
+       // generate a signed son web token with the contents of user object and return it in the response
+       const token = jwt.sign(user, 'your_jwt_secret');
+       return res.json({user, token});
     });
-  });
+})(req, res);
 });
 
 
