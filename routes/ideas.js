@@ -8,7 +8,7 @@ require('../models/Idea');
 const Idea = mongoose.model('ideas');
 
 // Idea Index Page
-router.get('/', ensureAuthenticated, (req, res) => {
+router.get('/dashboard', ensureAuthenticated, (req, res) => {
   Idea.find({user: req.user.id})
     .sort({date:'desc'})
     .then(ideas => {
@@ -24,14 +24,14 @@ router.get('/add', ensureAuthenticated, (req, res) => {
 });
 
 // Edit Idea Form
-router.get('/edit/:id', ensureAuthenticated, (req, res) => {
+router.get('/update/:id', ensureAuthenticated, (req, res) => {
   Idea.findOne({
     _id: req.params.id
   })
   .then(idea => {
     if(idea.user != req.user.id){
       req.flash('error_msg', 'Not Authorized');
-      res.redirect('/ideas');
+      res.redirect('/dashboard');
     } else {
       res.render('ideas/edit', {
         idea:idea
@@ -68,13 +68,13 @@ router.post('/add', ensureAuthenticated, (req, res) => {
       .save()
       .then(idea => {
         req.flash('success_msg', 'idea added');
-        res.redirect('/ideas');
+        res.redirect('/dashboard');
       })
   }
 });
 
 // Edit Form process
-router.put('/edit/:id', ensureAuthenticated, (req, res) => {
+router.put('/update/:id', ensureAuthenticated, (req, res) => {
   Idea.findOne({
     _id: req.params.id
   })
@@ -86,7 +86,7 @@ router.put('/edit/:id', ensureAuthenticated, (req, res) => {
     idea.save()
       .then(idea => {
         req.flash('success_msg', 'idea updated');
-        res.redirect('/ideas');
+        res.redirect('/dashboard');
       })
   });
 });
@@ -96,7 +96,7 @@ router.delete('/delete/:id', ensureAuthenticated, (req, res) => {
   Idea.remove({_id: req.params.id})
     .then(() => {
       req.flash('success_msg', 'idea removed');
-      res.redirect('/ideas');
+      res.redirect('/dashboard');
     });
 });
 

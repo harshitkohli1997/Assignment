@@ -1,11 +1,11 @@
-<a class="btn btn-danger" style="float:right" href="/ideas/add">Add New Idea</a>
+<a class="btn btn-danger" style="float:right" href="/add">Add New Idea</a>
 <br><br><br>
 {{#each ideas}}
   <div class="card card-body mb-2">
     <h4>{{title}}</h4>
     <p>{{details}}</p>
-    <a class="btn btn-dark btn-block mb-2" href="/ideas/edit/{{id}}">Edit</a>
-    <form method="post" action="/ideas/delete/{{id}}?_method=DELETE">
+    <a class="btn btn-dark btn-block mb-2" href="/update/{{id}}">Edit</a>
+    <form method="post" action="/delete/{{id}}?_method=DELETE">
       <input type="hidden" name="_method" value="DELETE">
       <input type="submit" class="btn btn-danger btn-block" value="Delete">
     </form>

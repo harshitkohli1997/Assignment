@@ -15,11 +15,11 @@ const userCredentials = {
   var authenticatedUser = request.agent(app);
   beforeEach(function(done){
     authenticatedUser
-      .post('/users/login')
+      .post('/login')
       .send(userCredentials)
       .end(function(err, response){
         expect(response.statusCode).to.equal(302);
-        expect('Location', '/ideas');
+        expect('Location', '/dashboard');
         done();
       });
   });
@@ -37,7 +37,7 @@ const userCredentials = {
   
     it('should return a 302 response if the user is get registered', function(done){
       request(app)
-      .post('/users/register')
+      .post('/signup')
       .send(newuser)
       .end(function(err, response){
         expect(response.statusCode).to.equal(302);
@@ -53,13 +53,13 @@ const userCredentials = {
 
   describe('Test auth', function(done){
       it('should return a 200 response if the user is logged in', function(done){
-        authenticatedUser.get('/ideas')
+        authenticatedUser.get('/dashboard')
         .expect(200, done);
       });
     
       it('should return a 302 response and redirect to /login', function(done){
-        request(app).get('/ideas')
-        .expect('Location', '/users/login')
+        request(app).get('/dashboard')
+        .expect('Location', '/login')
         .expect(302, done);
       });
     });
@@ -71,7 +71,7 @@ const userCredentials = {
       
         it('should return a 200 response if the idea is updated', function(done){
           authenticatedUser
-          .put('/ideas/edit/5cab161de9f32b2be0536a70')
+          .put('/update/5cab161de9f32b2be0536a70')
           .send(idea)
           .expect(302, done);
           

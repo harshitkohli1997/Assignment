@@ -16,22 +16,22 @@ router.get('/login', (req, res) => {
 });
 
 // User Register Route
-router.get('/register', (req, res) => {
+router.get('/signup', (req, res) => {
   res.render('users/register');
 });
 
 // Login Form POST
 router.post('/login', (req, res,next) => {
   passport.authenticate('local', {
-    successRedirect:'/ideas',
-    failureRedirect: '/users/login',
+    successRedirect:'/dashboard',
+    failureRedirect: '/login',
     failureFlash: true
   })(req, res, next);
 });
 
 
 // Register Form POST
-router.post('/register', (req, res) => {
+router.post('/signup', (req, res) => {
   let errors = [];
 
   if(req.body.password != req.body.password2){
@@ -55,7 +55,7 @@ router.post('/register', (req, res) => {
       .then(user => {
         if(user){
           req.flash('error_msg', 'Email already regsitered');
-          res.redirect('/users/register');
+          res.redirect('/signup');
         } else {
           const newUser = new User({
             name: req.body.name,
@@ -70,7 +70,7 @@ router.post('/register', (req, res) => {
               newUser.save()
                 .then(user => {
                   req.flash('success_msg', 'You are now registered and can log in');
-                  res.redirect('/users/login');
+                  res.redirect('/login');
                 })
                 .catch(err => {
                   console.log(err);
@@ -87,7 +87,7 @@ router.post('/register', (req, res) => {
 router.get('/logout', (req, res) => {
   req.logout();
   req.flash('success_msg', 'You are logged out');
-  res.redirect('/users/login');
+  res.redirect('/login');
 });
 
 module.exports = router;

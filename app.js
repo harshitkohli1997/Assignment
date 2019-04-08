@@ -80,8 +80,8 @@ app.get('/', (req, res) => {
 
 
 // Use routes
-app.use('/ideas', ideas);
-app.use('/users', users);
+app.use('/', ideas);
+app.use('/', users);
 
 const port = process.env.PORT || 3000 ;
 
