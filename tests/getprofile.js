@@ -24,8 +24,7 @@ const userCredentials = {
       });
   });
 
-//dummy user for register testing
-
+  
   const newuser = {
     email:'test@gmail.com',
     name:'testing',

@@ -10,7 +10,7 @@ const mongoose = require('mongoose');
 
 const app = express();
 
-module.exports = app;
+
 
 // Load routes
 const ideas = require('./routes/ideas');
@@ -85,6 +85,9 @@ app.use('/users', users);
 
 const port = process.env.PORT || 3000 ;
 
+
 app.listen(port, () =>{
   console.log(`Server started on port ${port}`);
 });
+
+module.exports  = app;
