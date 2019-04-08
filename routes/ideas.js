@@ -42,7 +42,7 @@ router.get('/edit/:id', ensureAuthenticated, (req, res) => {
 });
 
 // Process Form
-router.post('/', ensureAuthenticated, (req, res) => {
+router.post('/add', ensureAuthenticated, (req, res) => {
   let errors = [];
 
   if(!req.body.title){
@@ -74,7 +74,7 @@ router.post('/', ensureAuthenticated, (req, res) => {
 });
 
 // Edit Form process
-router.put('/:id', ensureAuthenticated, (req, res) => {
+router.put('/edit/:id', ensureAuthenticated, (req, res) => {
   Idea.findOne({
     _id: req.params.id
   })
@@ -92,7 +92,7 @@ router.put('/:id', ensureAuthenticated, (req, res) => {
 });
 
 // Delete Idea
-router.delete('/:id', ensureAuthenticated, (req, res) => {
+router.delete('/delete/:id', ensureAuthenticated, (req, res) => {
   Idea.remove({_id: req.params.id})
     .then(() => {
       req.flash('success_msg', 'idea removed');
