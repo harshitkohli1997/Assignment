@@ -4,8 +4,8 @@
   "description": "App to create video ideas",
   "main": "app.js",
   "scripts": {
-    "start":"node app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js",
+    "test": "node ./node_modules/mocha/bin/mocha ./tests"
   },
   "author": "Brad Traversy",
   "license": "MIT",
@@ -22,5 +22,11 @@
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^6.1.1",
+    "superagent": "^5.0.2",
+    "supertest": "^4.0.2"
   }
 }

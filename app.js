@@ -10,6 +10,8 @@ const mongoose = require('mongoose');
 
 const app = express();
 
+module.exports = app;
+
 // Load routes
 const ideas = require('./routes/ideas');
 const users = require('./routes/users');
